@@ -11,6 +11,8 @@ class App(tkinter.Frame):
         self.root = root
         self.progressBarValue = tkinter.IntVar()
         self.imagePath = tkinter.StringVar()
+        self.TileSizeEntry=tkinter.IntVar()
+        self.zoomFactorEntry = tkinter.IntVar()
         self.interface()
 
 
@@ -29,13 +31,15 @@ class App(tkinter.Frame):
         # Tile Size
         tileSize_label = tkinter.Label(text="Tile Size :")
         tileSize_label.grid(row=2, column=0)
-        tileSize_input = tkinter.Entry()
+        tileSize_input = tkinter.Entry(textvariable=self.TileSizeEntry)
+        self.TileSizeEntry.set(256)
         tileSize_input.grid(row=2, column=1)
         
         # ZoomFactor
         zoomFactor_label = tkinter.Label(text="Zoom Factor :")
         zoomFactor_label.grid(row=3, column=0)
-        zoomFactor_input = tkinter.Entry()
+        zoomFactor_input = tkinter.Entry(textvariable=self.zoomFactorEntry)
+        self.zoomFactorEntry.set(2)
         zoomFactor_input.grid(row=3, column=1)
 
         # ProgressBar
@@ -52,7 +56,10 @@ class App(tkinter.Frame):
 
 
     def genTiles(self):
-        mapTile = MapGenerator.Map(self.imagePath.get())
+        mapTile = MapGenerator.Map(
+            self.imagePath.get(),
+            tileSize = self.TileSizeEntry.get(),
+            sizeFactor = self.zoomFactorEntry.get())
         
         self.progressBar.config(
             mode='determinate', 
